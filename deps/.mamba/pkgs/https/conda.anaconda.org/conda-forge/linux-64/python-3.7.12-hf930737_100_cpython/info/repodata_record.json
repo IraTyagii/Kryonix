@@ -1,0 +1,35 @@
+{
+    "arch": "x86_64",
+    "build": "hf930737_100_cpython",
+    "build_number": 100,
+    "build_string": "hf930737_100_cpython",
+    "channel": "conda-forge",
+    "constrains": [
+        "python_abi 3.7.* *_cp37m"
+    ],
+    "depends": [
+        "ld_impl_linux-64 >=2.34",
+        "libffi >=3.4.2,<3.5.0a0",
+        "libgcc-ng >=9.4.0",
+        "libnsl >=2.0.0,<2.1.0a0",
+        "libstdcxx-ng >=9.4.0",
+        "libzlib >=1.2.11,<2.0.0a0",
+        "ncurses >=6.2,<7.0.0a0",
+        "openssl >=3.0.0,<4.0a0",
+        "readline >=8.1,<9.0a0",
+        "sqlite >=3.36.0,<4.0a0",
+        "tk >=8.6.11,<8.7.0a0",
+        "xz >=5.2.5,<6.0.0a0"
+    ],
+    "fn": "python-3.7.12-hf930737_100_cpython.tar.bz2",
+    "license": "Python-2.0",
+    "md5": "416558a6f46b7a1fa8db7d0e98aff56a",
+    "name": "python",
+    "platform": "linux",
+    "sha256": "7d8980562258f240e0f296afe46948eed9ab5034dfafec0079df08f51d27d45d",
+    "size": 60111491,
+    "subdir": "linux-64",
+    "timestamp": 1635228923,
+    "url": "https://conda.anaconda.org/conda-forge/linux-64/python-3.7.12-hf930737_100_cpython.tar.bz2",
+    "version": "3.7.12"
+}

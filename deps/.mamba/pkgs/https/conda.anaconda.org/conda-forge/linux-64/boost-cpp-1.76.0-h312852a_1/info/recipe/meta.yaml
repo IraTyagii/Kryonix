@@ -1,0 +1,142 @@
+# This file created by conda-build 3.21.4
+# meta.yaml template originally from:
+# /home/conda/recipe_root, last modified Sun May 16 19:44:30 2021
+# ------------------------------------------------
+
+package:
+  name: boost-cpp
+  version: 1.76.0
+source:
+  patches:
+    - 5eff1ecc8413b0dc93a1ab047d7fed751e6cb40e.patch
+  sha256: f0397ba6e982c4450f27bf32a2a83292aba035b827a5623a14636ea583318c41
+  url: https://boostorg.jfrog.io/artifactory/main/release/1.76.0/source/boost_1_76_0.tar.bz2
+build:
+  number: '1'
+  string: h312852a_1
+requirements:
+  build:
+    - _libgcc_mutex 0.1 conda_forge
+    - _openmp_mutex 4.5 1_gnu
+    - binutils_impl_linux-64 2.35.1 h193b22a_2
+    - binutils_linux-64 2.35 h67ddf6f_30
+    - gcc_impl_linux-64 9.3.0 h70c0ae5_19
+    - gcc_linux-64 9.3.0 hf25ea35_30
+    - gxx_impl_linux-64 9.3.0 hd87eabc_19
+    - gxx_linux-64 9.3.0 h3fbe746_30
+    - kernel-headers_linux-64 2.6.32 h77966d4_13
+    - ld_impl_linux-64 2.35.1 hea4e1c9_2
+    - libgcc-devel_linux-64 9.3.0 h7864c58_19
+    - libgcc-ng 9.3.0 h2828fa1_19
+    - libgomp 9.3.0 h2828fa1_19
+    - libstdcxx-devel_linux-64 9.3.0 hb016644_19
+    - libstdcxx-ng 9.3.0 h6de172a_19
+    - sysroot_linux-64 2.12 h77966d4_13
+  host:
+    - _libgcc_mutex 0.1 conda_forge
+    - _openmp_mutex 4.5 1_gnu
+    - bzip2 1.0.8 h7f98852_4
+    - icu 68.1 h58526e2_0
+    - libgcc-ng 9.3.0 h2828fa1_19
+    - libgomp 9.3.0 h2828fa1_19
+    - libstdcxx-ng 9.3.0 h6de172a_19
+    - lz4-c 1.9.3 h9c3ff4c_0
+    - xz 5.2.5 h516909a_1
+    - zlib 1.2.11 h516909a_1010
+    - zstd 1.5.0 ha95c52a_0
+  run:
+    - bzip2 >=1.0.8,<2.0a0
+    - bzip2 >=1.0.8,<2.0a0
+    - icu >=68.1,<69.0a0
+    - libgcc-ng >=9.3.0
+    - libstdcxx-ng >=9.3.0
+    - xz >=5.2.5,<5.3.0a0
+    - xz >=5.2.5,<5.3.0a0
+    - zstd >=1.5.0,<1.6.0a0
+  run_constrained:
+    - libboost <0
+test:
+  commands:
+    - '! test -f $PREFIX/include/boost/python.hpp'
+    - '! test -d $PREFIX/include/boost/python'
+    - test -f $PREFIX/lib/libboost_exception.a
+    - test -f $PREFIX/lib/libboost_test_exec_monitor.a
+    - test ! -f $PREFIX/lib/libboost_atomic.a
+    - test -f $PREFIX/lib/libboost_atomic.so
+    - test ! -f $PREFIX/lib/libboost_chrono.a
+    - test -f $PREFIX/lib/libboost_chrono.so
+    - test ! -f $PREFIX/lib/libboost_container.a
+    - test -f $PREFIX/lib/libboost_container.so
+    - test ! -f $PREFIX/lib/libboost_context.a
+    - test -f $PREFIX/lib/libboost_context.so
+    - test ! -f $PREFIX/lib/libboost_contract.a
+    - test -f $PREFIX/lib/libboost_contract.so
+    - test ! -f $PREFIX/lib/libboost_coroutine.a
+    - test -f $PREFIX/lib/libboost_coroutine.so
+    - test ! -f $PREFIX/lib/libboost_date_time.a
+    - test -f $PREFIX/lib/libboost_date_time.so
+    - test ! -f $PREFIX/lib/libboost_filesystem.a
+    - test -f $PREFIX/lib/libboost_filesystem.so
+    - test ! -f $PREFIX/lib/libboost_graph.a
+    - test -f $PREFIX/lib/libboost_graph.so
+    - test ! -f $PREFIX/lib/libboost_iostreams.a
+    - test -f $PREFIX/lib/libboost_iostreams.so
+    - test ! -f $PREFIX/lib/libboost_locale.a
+    - test -f $PREFIX/lib/libboost_locale.so
+    - test ! -f $PREFIX/lib/libboost_log.a
+    - test -f $PREFIX/lib/libboost_log.so
+    - test ! -f $PREFIX/lib/libboost_log_setup.a
+    - test -f $PREFIX/lib/libboost_log_setup.so
+    - test ! -f $PREFIX/lib/libboost_math_c99.a
+    - test -f $PREFIX/lib/libboost_math_c99.so
+    - test ! -f $PREFIX/lib/libboost_math_c99f.a
+    - test -f $PREFIX/lib/libboost_math_c99f.so
+    - test ! -f $PREFIX/lib/libboost_math_tr1.a
+    - test -f $PREFIX/lib/libboost_math_tr1.so
+    - test ! -f $PREFIX/lib/libboost_math_tr1f.a
+    - test -f $PREFIX/lib/libboost_math_tr1f.so
+    - test ! -f $PREFIX/lib/libboost_prg_exec_monitor.a
+    - test -f $PREFIX/lib/libboost_prg_exec_monitor.so
+    - test ! -f $PREFIX/lib/libboost_program_options.a
+    - test -f $PREFIX/lib/libboost_program_options.so
+    - test ! -f $PREFIX/lib/libboost_random.a
+    - test -f $PREFIX/lib/libboost_random.so
+    - test ! -f $PREFIX/lib/libboost_regex.a
+    - test -f $PREFIX/lib/libboost_regex.so
+    - test ! -f $PREFIX/lib/libboost_serialization.a
+    - test -f $PREFIX/lib/libboost_serialization.so
+    - test ! -f $PREFIX/lib/libboost_system.a
+    - test -f $PREFIX/lib/libboost_system.so
+    - test ! -f $PREFIX/lib/libboost_thread.a
+    - test -f $PREFIX/lib/libboost_thread.so
+    - test ! -f $PREFIX/lib/libboost_timer.a
+    - test -f $PREFIX/lib/libboost_timer.so
+    - test ! -f $PREFIX/lib/libboost_type_erasure.a
+    - test -f $PREFIX/lib/libboost_type_erasure.so
+    - test ! -f $PREFIX/lib/libboost_unit_test_framework.a
+    - test -f $PREFIX/lib/libboost_unit_test_framework.so
+    - test ! -f $PREFIX/lib/libboost_wave.a
+    - test -f $PREFIX/lib/libboost_wave.so
+    - test ! -f $PREFIX/lib/libboost_wserialization.a
+    - test -f $PREFIX/lib/libboost_wserialization.so
+    - test ! -f $PREFIX/lib/libboost_math_c99l.a
+    - test -f $PREFIX/lib/libboost_math_c99l.so
+    - test ! -f $PREFIX/lib/libboost_math_tr1l.a
+    - test -f $PREFIX/lib/libboost_math_tr1l.so
+about:
+  home: http://www.boost.org/
+  license: BSL-1.0
+  license_file: LICENSE_1_0.txt
+  summary: Free peer-reviewed portable C++ source libraries.
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - beckermr
+    - ccordoba12
+    - isuruf
+    - jakirkham
+    - jschueller
+    - msarahan
+    - ocefpaf
+    - xhochy

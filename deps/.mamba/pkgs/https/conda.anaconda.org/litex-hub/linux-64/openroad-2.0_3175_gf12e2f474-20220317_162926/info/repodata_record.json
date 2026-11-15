@@ -1,0 +1,30 @@
+{
+    "arch": "x86_64",
+    "build": "20220317_162926",
+    "build_number": 20220317162926,
+    "build_string": "20220317_162926",
+    "channel": "litex-hub",
+    "constrains": [],
+    "depends": [
+        "_openmp_mutex >=4.5",
+        "boost-cpp >=1.76,<1.77.0a0",
+        "libgcc-ng >=11.2.0",
+        "libstdcxx-ng >=11.2.0",
+        "libzlib >=1.2.11,<1.3.0a0",
+        "python >=3.7,<3.8.0a0",
+        "python_abi 3.7.* *_cp37m",
+        "readline >=8.1,<9.0a0",
+        "tk >=8.6.12,<8.7.0a0"
+    ],
+    "fn": "openroad-2.0_3175_gf12e2f474-20220317_162926.tar.bz2",
+    "license": "BSD-3-Clause",
+    "md5": "ead4b5675743d4baa36ec78935bfd532",
+    "name": "openroad",
+    "platform": "linux",
+    "sha256": "201b83f588192904fe70bb64ea342df69bc9fb6f838e8d85bed92fee6d77d4fd",
+    "size": 22726256,
+    "subdir": "linux-64",
+    "timestamp": 1648339627,
+    "url": "https://conda.anaconda.org/litex-hub/linux-64/openroad-2.0_3175_gf12e2f474-20220317_162926.tar.bz2",
+    "version": "2.0_3175_gf12e2f474"
+}

@@ -1,0 +1,17 @@
+# SPDX-License-Identifier: 0BSD
+# Author: Lasse Collin
+
+prefix=/home/srijan-rastogi/REGENX_WORK/REGEN_X/deps/openroad-env
+exec_prefix=/home/srijan-rastogi/REGENX_WORK/REGEN_X/deps/openroad-env
+libdir=/home/srijan-rastogi/REGENX_WORK/REGEN_X/deps/openroad-env/lib
+includedir=/home/srijan-rastogi/REGENX_WORK/REGEN_X/deps/openroad-env/include
+
+Name: liblzma
+Description: General purpose data compression library
+License: 0BSD
+URL: https://tukaani.org/xz/
+Version: 5.8.3
+Cflags: -I${includedir}
+Cflags.private: -DLZMA_API_STATIC
+Libs: -L${libdir} -llzma
+Libs.private: -pthread -lpthread 

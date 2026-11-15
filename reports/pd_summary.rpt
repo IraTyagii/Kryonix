@@ -1,0 +1,110 @@
+OpenROAD f12e2f474102bfb875eeee57fb610d7d7de17770 
+This program is licensed under the BSD-3 license. See the LICENSE file for details.
+Components of this program may be licensed under more restrictive licenses which must be honored.
+[INFO ODB-0222] Reading LEF file: ./deps/nangate45/NangateOpenCellLibrary.tech.lef
+[INFO ODB-0223]     Created 22 technology layers
+[INFO ODB-0224]     Created 27 technology vias
+[INFO ODB-0226] Finished LEF file:  ./deps/nangate45/NangateOpenCellLibrary.tech.lef
+[INFO ODB-0222] Reading LEF file: ./deps/nangate45/NangateOpenCellLibrary.macro.mod.lef
+[INFO ODB-0225]     Created 135 library cells
+[INFO ODB-0226] Finished LEF file:  ./deps/nangate45/NangateOpenCellLibrary.macro.mod.lef
+parasitics: post-route extraction (pd/regenx_top.spef)
+==== design area ====
+Design area 17148 u^2 64% utilization.
+==== worst slack (max / min), post-route ====
+worst slack 0.08
+worst slack 0.01
+==== tns / wns ====
+tns 0.00
+wns 0.00
+==== clock skew ====
+Clock clk
+Latency      CRPR       Skew
+_16576_/CK ^
+   0.24
+_17391_/CK ^
+   0.20      0.00       0.04
+
+==== power ====
+Group                  Internal  Switching    Leakage      Total
+                          Power      Power      Power      Power
+----------------------------------------------------------------
+Sequential             1.89e-03   2.27e-04   1.26e-04   2.24e-03  40.1%
+Combinational          1.62e-03   1.47e-03   2.60e-04   3.34e-03  59.9%
+Macro                  0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+Pad                    0.00e+00   0.00e+00   0.00e+00   0.00e+00   0.0%
+----------------------------------------------------------------
+Total                  3.50e-03   1.69e-03   3.86e-04   5.58e-03 100.0%
+                          62.7%      30.3%       6.9%
+==== setup path ====
+Startpoint: dbg_class_row[0] (input port clocked by clk)
+Endpoint: dbg_class[1] (output port clocked by clk)
+Path Group: clk
+Path Type: max
+
+   Delay     Time   Description
+-----------------------------------------------------------
+   0.000    0.000   clock clk (rise edge)
+   0.000    0.000   clock network delay (propagated)
+   1.000    1.000 v input external delay
+   0.000    1.000 v dbg_class_row[0] (in)
+   1.217    2.217 ^ _10171_/ZN (AOI211_X1)
+   0.025    2.242 v _10172_/ZN (AOI211_X1)
+   0.082    2.324 ^ _10175_/ZN (AOI211_X2)
+   0.019    2.343 v _10203_/ZN (NOR3_X1)
+   0.051    2.393 v _10205_/ZN (OR2_X1)
+   0.056    2.450 v _10206_/ZN (OR2_X1)
+   0.050    2.499 v _10246_/ZN (OR2_X1)
+   0.039    2.538 ^ _10286_/ZN (NOR2_X1)
+   0.048    2.586 ^ _10326_/ZN (AND2_X1)
+   0.019    2.605 v _10334_/ZN (NOR2_X1)
+   0.078    2.683 ^ _10335_/ZN (NOR3_X4)
+   0.023    2.706 v _10336_/ZN (INV_X1)
+   0.108    2.814 ^ _10466_/ZN (NOR4_X4)
+   0.009    2.823 ^ dbg_class[1] (out)
+            2.823   data arrival time
+
+   4.000    4.000   clock clk (rise edge)
+   0.000    4.000   clock network delay (propagated)
+  -0.100    3.900   clock uncertainty
+   0.000    3.900   clock reconvergence pessimism
+  -1.000    2.900   output external delay
+            2.900   data required time
+-----------------------------------------------------------
+            2.900   data required time
+           -2.823   data arrival time
+-----------------------------------------------------------
+            0.077   slack (MET)
+
+
+==== hold path ====
+Startpoint: _16164_ (rising edge-triggered flip-flop clocked by clk)
+Endpoint: _16164_ (rising edge-triggered flip-flop clocked by clk)
+Path Group: clk
+Path Type: min
+
+   Delay     Time   Description
+-----------------------------------------------------------
+   0.000    0.000   clock clk (rise edge)
+   0.202    0.202   clock network delay (propagated)
+   0.000    0.202 ^ _16164_/CK (DFF_X1)
+   0.088    0.290 v _16164_/Q (DFF_X1)
+   0.026    0.315 v _15760_/Z (BUF_X1)
+   0.000    0.315 v _16164_/D (DFF_X1)
+            0.315   data arrival time
+
+   0.000    0.000   clock clk (rise edge)
+   0.202    0.202   clock network delay (propagated)
+   0.100    0.302   clock uncertainty
+   0.000    0.302   clock reconvergence pessimism
+            0.302 ^ _16164_/CK (DFF_X1)
+   0.004    0.306   library hold time
+            0.306   data required time
+-----------------------------------------------------------
+            0.306   data required time
+           -0.315   data arrival time
+-----------------------------------------------------------
+            0.010   slack (MET)
+
+
+PD_REPORTS_DONE

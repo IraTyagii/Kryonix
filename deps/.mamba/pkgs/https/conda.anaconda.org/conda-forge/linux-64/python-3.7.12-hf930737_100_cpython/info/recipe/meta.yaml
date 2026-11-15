@@ -1,0 +1,186 @@
+# This file created by conda-build 3.21.4
+# meta.yaml template originally from:
+# /home/conda/recipe_root, last modified Tue Oct 26 05:26:15 2021
+# ------------------------------------------------
+
+package:
+  name: python
+  version: 3.7.12
+source:
+  - md5: 352ea082224121a8b7bc4d6d06e5de39
+    patches:
+      - patches/0000-Fix-off-by-one-error-in-_winapi_WaitForMultipleObjec.patch
+      - patches/0002-Darwin-Add-arch-x86_64-to-UnicCCompiler-ld_args.patch
+      - patches/0003-Win32-Change-FD_SETSIZE-from-512-to-2048.patch
+      - patches/0004-Win32-distutils-Add-support-to-cygwinccompiler-for-V.patch
+      - patches/0005-Do-not-pass-g-to-GCC-when-not-Py_DEBUG.patch
+      - patches/0006-Support-cross-compiling-byte-code.patch
+      - patches/0007-Win32-Fixes-for-Windows-GCC-interop-needed-by-RPy2-a.patch
+      - patches/0008-Darwin-Look-in-sysroot-usr-lib-include-if-sysroot-is.patch
+      - patches/0009-runtime_library_dir_option-Use-1st-word-of-CC-as-com.patch
+      - patches/0010-Win32-Do-not-download-externals.patch
+      - patches/0011-Add-support-for-_CONDA_PYTHON_SYSCONFIGDATA_NAME-if-.patch
+      - patches/0012-Fix-find_library-so-that-it-looks-in-sys.prefix-lib-.patch
+      - patches/0013-Disable-new-dtags-in-unixccompiler.py.patch
+      - patches/0014-Fix-cross-compilation-on-Debian-based-distros.patch
+      - patches/0015-Disable-registry-lookup-unless-CONDA_PY_ALLOW_REG_PA.patch
+      - patches/0016-Unvendor-openssl.patch
+      - patches/0017-Unvendor-sqlite3.patch
+      - patches/0018-venv-Revert-a-change-from-https-github.com-python-cp.patch
+      - patches/0020-Use-ranlib-from-env-if-env-variable-is-set.patch
+      - patches/0021-Set-ssltag-to-3.patch
+      - patches/0022-Openssl3-load-verify-error.patch
+    url: https://www.python.org/ftp/python/3.7.12/Python-3.7.12.tar.xz
+build:
+  detect_binary_files_with_prefix: true
+  ignore_run_exports:
+    - bzip2
+  no_link: null
+  number: '100'
+  run_exports:
+    noarch:
+      - python
+    weak:
+      - python_abi 3.7.* *_cp37m
+  string: hf930737_100_cpython
+requirements:
+  build:
+    - _libgcc_mutex 0.1 conda_forge
+    - _openmp_mutex 4.5 1_gnu
+    - binutils_impl_linux-64 2.36.1 h193b22a_2
+    - binutils_linux-64 2.36 hf3e587d_1
+    - gcc_impl_linux-64 9.4.0 h03d3576_11
+    - gcc_linux-64 9.4.0 h391b98a_1
+    - gxx_impl_linux-64 9.4.0 h03d3576_11
+    - gxx_linux-64 9.4.0 h0316aca_1
+    - kernel-headers_linux-64 2.6.32 he073ed8_14
+    - ld_impl_linux-64 2.36.1 hea4e1c9_2
+    - libgcc-devel_linux-64 9.4.0 hd854feb_11
+    - libgcc-ng 11.2.0 h1d223b6_11
+    - libgomp 11.2.0 h1d223b6_11
+    - libsanitizer 9.4.0 h79bfe98_11
+    - libstdcxx-devel_linux-64 9.4.0 hd854feb_11
+    - libstdcxx-ng 11.2.0 he4da1e4_11
+    - libuuid-cos6-x86_64 2.17.2 h9b0a68f_1105
+    - libuuid-devel-cos6-x86_64 2.17.2 h9b0a68f_1105
+    - libx11-common-cos6-x86_64 1.6.4 h9b0a68f_1105
+    - libx11-cos6-x86_64 1.6.4 h9b0a68f_1105
+    - libx11-devel-cos6-x86_64 1.6.4 h9b0a68f_1105
+    - make 4.3 hd18ef5c_1
+    - patch 2.7.6 h7f98852_1002
+    - pkg-config 0.29.2 h36c2ea0_1008
+    - sysroot_linux-64 2.12 he073ed8_14
+    - xorg-x11-proto-devel-cos6-x86_64 7.7 h9b0a68f_1105
+  host:
+    - _libgcc_mutex 0.1 conda_forge
+    - _openmp_mutex 4.5 1_gnu
+    - bzip2 1.0.8 h7f98852_4
+    - ca-certificates 2021.10.8 ha878542_0
+    - ld_impl_linux-64 2.36.1 hea4e1c9_2
+    - libffi 3.4.2 h9c3ff4c_4
+    - libgcc-ng 11.2.0 h1d223b6_11
+    - libgomp 11.2.0 h1d223b6_11
+    - libnsl 2.0.0 h7f98852_0
+    - libstdcxx-ng 11.2.0 he4da1e4_11
+    - libzlib 1.2.11 h36c2ea0_1013
+    - ncurses 6.2 h58526e2_4
+    - openssl 3.0.0 h7f98852_1
+    - readline 8.1 h46c0cb4_0
+    - sqlite 3.36.0 h9cd32fc_2
+    - tk 8.6.11 h27826a3_1
+    - xz 5.2.5 h516909a_1
+    - zlib 1.2.11 h36c2ea0_1013
+  run:
+    - ld_impl_linux-64 >=2.34
+    - libffi >=3.4.2,<3.5.0a0
+    - libgcc-ng >=9.4.0
+    - libnsl >=2.0.0,<2.1.0a0
+    - libstdcxx-ng >=9.4.0
+    - libzlib >=1.2.11,<1.3.0a0
+    - ncurses >=6.2,<6.3.0a0
+    - openssl >=3.0.0,<4.0a0
+    - readline >=8.1,<9.0a0
+    - sqlite >=3.36.0,<4.0a0
+    - tk >=8.6.11,<8.7.0a0
+    - xz >=5.2.5,<5.3.0a0
+  run_constrained:
+    - python_abi 3.7.* *_cp37m
+test:
+  commands:
+    - python -V
+    - python3 -V
+    - 2to3 -h
+    - pydoc -h
+    - python3-config --help
+    - python -c "import ssl; ssl.create_default_context()"
+    - python -c "import sys; files = [f for f in sys.argv[2:] if b' -partition=none'
+      in open(f, 'rb').read()]; assert len(files) == 0, files" ${PREFIX}/lib/*/*.py
+    - python -c "import sysconfig; print(sysconfig.get_config_var('CC'))"
+    - _CONDA_PYTHON_SYSCONFIGDATA_NAME=_sysconfigdata_x86_64_conda_linux_gnu python
+      -c "import sysconfig; print(sysconfig.get_config_var('CC'))"
+    - for f in ${CONDA_PREFIX}/lib/python*/_sysconfig*.py; do echo "Checking $f:";
+      if [[ `rg @ $f` ]]; then echo "FAILED ON $f"; cat $f; exit 1; fi; done
+    - pushd tests
+    - pushd distutils
+    - python setup.py install -v -v
+    - python -c "import foobar"
+    - popd
+    - pushd distutils.cext
+    - python setup.py install -v -v
+    - python -c "import greet; greet.greet('Python user')" | rg "Hello Python"
+    - popd
+    - pushd prefix-replacement
+    - bash build-and-test.sh
+    - popd
+    - pushd cmake
+    - cmake -GNinja -DPY_VER=3.7.12
+    - popd
+    - popd
+  files:
+    - tests/cmake/*
+    - tests/cython/*
+    - tests/distutils.cext/*
+    - tests/distutils/*
+    - tests/prefix-replacement/*
+  requires:
+    - cmake
+    - cython
+    - gcc_linux-64 9.*
+    - gxx_linux-64 9.*
+    - ninja
+    - openssl
+    - ripgrep
+    - setuptools
+about:
+  description: 'Python is a widely used high-level, general-purpose, interpreted,
+    dynamic
+
+    programming language. Its design philosophy emphasizes code
+
+    readability, and its syntax allows programmers to express concepts in
+
+    fewer lines of code than would be possible in languages such as C++ or
+
+    Java. The language provides constructs intended to enable clear programs
+
+    on both a small and large scale.
+
+    '
+  dev_url: https://docs.python.org/devguide/
+  doc_source_url: https://github.com/python/pythondotorg/blob/master/docs/source/index.rst
+  doc_url: https://www.python.org/doc/versions/
+  home: http://www.python.org/
+  license: Python-2.0
+  license_file: LICENSE
+  summary: General purpose programming language
+extra:
+  copy_test_source_files: true
+  final: true
+  recipe-maintainers:
+    - jakirkham
+    - mingwandroid
+    - msarahan
+    - ocefpaf
+    - pelson
+    - scopatz
+    - wolfv

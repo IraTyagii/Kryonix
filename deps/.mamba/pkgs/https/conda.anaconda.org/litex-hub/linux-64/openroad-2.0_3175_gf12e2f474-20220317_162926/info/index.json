@@ -1,0 +1,22 @@
+{
+  "arch": "x86_64",
+  "build": "20220317_162926",
+  "build_number": 20220317162926,
+  "depends": [
+    "_openmp_mutex >=4.5",
+    "boost-cpp >=1.76,<1.77.0a0",
+    "libgcc-ng >=11.2.0",
+    "libstdcxx-ng >=11.2.0",
+    "libzlib >=1.2.11,<1.3.0a0",
+    "python >=3.7,<3.8.0a0",
+    "python_abi 3.7.* *_cp37m",
+    "readline >=8.1,<9.0a0",
+    "tk >=8.6.12,<8.7.0a0"
+  ],
+  "license": "BSD-3-Clause",
+  "name": "openroad",
+  "platform": "linux",
+  "subdir": "linux-64",
+  "timestamp": 1648339627349,
+  "version": "2.0_3175_gf12e2f474"
+}

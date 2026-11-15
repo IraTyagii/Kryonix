@@ -1,0 +1,43 @@
+config: SEEDS=5 NRAND=300 PERIOD=3000, ECC_EN in {1,0}
+[ecc=1 seed=1] COVERAGE fault kinds (slots): SA0=153 SA1=134 TF_UP=136 TF_DN=138 ROW0=85 ROW1=104 ALIAS=88 COUPLE=83
+[ecc=1 seed=1] COVERAGE outcomes: clean_boots=2 rows_in_spare=674 rows_ecc_assist=92 rows_unavailable=5
+[ecc=1 seed=1] ECC_EN=1 seed=1 boots=622 checks=537434 errors=0
+[ecc=1 seed=1] SVA_COVER boots=627 remap=847627 assist=157367 unavail=9854 both_spares=242948 migrate=7 scrub_fault=72 ecc_fix=439 rsp_err=16 scrub_cycles=13356 degraded=172867 data_lost_events=2
+[ecc=1 seed=2] COVERAGE fault kinds (slots): SA0=137 SA1=133 TF_UP=135 TF_DN=133 ROW0=92 ROW1=94 ALIAS=104 COUPLE=94
+[ecc=1 seed=2] COVERAGE outcomes: clean_boots=2 rows_in_spare=681 rows_ecc_assist=82 rows_unavailable=12
+[ecc=1 seed=2] ECC_EN=1 seed=2 boots=622 checks=537134 errors=0
+[ecc=1 seed=2] SVA_COVER boots=627 remap=836577 assist=141306 unavail=20039 both_spares=265262 migrate=7 scrub_fault=78 ecc_fix=394 rsp_err=30 scrub_cycles=13517 degraded=166812 data_lost_events=2
+[ecc=1 seed=3] COVERAGE fault kinds (slots): SA0=131 SA1=136 TF_UP=129 TF_DN=137 ROW0=99 ROW1=107 ALIAS=100 COUPLE=85
+[ecc=1 seed=3] COVERAGE outcomes: clean_boots=2 rows_in_spare=673 rows_ecc_assist=85 rows_unavailable=5
+[ecc=1 seed=3] ECC_EN=1 seed=3 boots=622 checks=537416 errors=0
+[ecc=1 seed=3] SVA_COVER boots=627 remap=839084 assist=145732 unavail=9854 both_spares=233797 migrate=7 scrub_fault=73 ecc_fix=421 rsp_err=16 scrub_cycles=13053 degraded=160870 data_lost_events=2
+[ecc=1 seed=4] COVERAGE fault kinds (slots): SA0=131 SA1=140 TF_UP=138 TF_DN=133 ROW0=100 ROW1=90 ALIAS=80 COUPLE=105
+[ecc=1 seed=4] COVERAGE outcomes: clean_boots=2 rows_in_spare=670 rows_ecc_assist=84 rows_unavailable=13
+[ecc=1 seed=4] ECC_EN=1 seed=4 boots=622 checks=537069 errors=0
+[ecc=1 seed=4] SVA_COVER boots=627 remap=841522 assist=144671 unavail=21494 both_spares=240810 migrate=7 scrub_fault=77 ecc_fix=410 rsp_err=32 scrub_cycles=13145 degraded=171787 data_lost_events=2
+[ecc=1 seed=5] COVERAGE fault kinds (slots): SA0=133 SA1=135 TF_UP=147 TF_DN=114 ROW0=91 ROW1=95 ALIAS=113 COUPLE=82
+[ecc=1 seed=5] COVERAGE outcomes: clean_boots=2 rows_in_spare=656 rows_ecc_assist=75 rows_unavailable=9
+[ecc=1 seed=5] ECC_EN=1 seed=5 boots=622 checks=537258 errors=0
+[ecc=1 seed=5] SVA_COVER boots=627 remap=830489 assist=130377 unavail=15674 both_spares=231698 migrate=7 scrub_fault=72 ecc_fix=369 rsp_err=24 scrub_cycles=13053 degraded=150905 data_lost_events=2
+[ecc=0 seed=1] COVERAGE fault kinds (slots): SA0=121 SA1=115 TF_UP=125 TF_DN=111 ROW0=89 ROW1=93 ALIAS=87 COUPLE=97
+[ecc=0 seed=1] COVERAGE outcomes: clean_boots=2 rows_in_spare=602 rows_ecc_assist=0 rows_unavailable=92
+[ecc=0 seed=1] ECC_EN=0 seed=1 boots=556 checks=475285 errors=0
+[ecc=0 seed=1] SVA_COVER boots=561 remap=729566 assist=0 unavail=136770 both_spares=192965 migrate=3 scrub_fault=3 ecc_fix=0 rsp_err=188 scrub_cycles=2393 degraded=142197 data_lost_events=0
+[ecc=0 seed=2] COVERAGE fault kinds (slots): SA0=121 SA1=105 TF_UP=131 TF_DN=109 ROW0=91 ROW1=87 ALIAS=97 COUPLE=105
+[ecc=0 seed=2] COVERAGE outcomes: clean_boots=2 rows_in_spare=633 rows_ecc_assist=0 rows_unavailable=85
+[ecc=0 seed=2] ECC_EN=0 seed=2 boots=556 checks=475587 errors=0
+[ecc=0 seed=2] SVA_COVER boots=561 remap=751466 assist=0 unavail=126585 both_spares=219995 migrate=3 scrub_fault=3 ecc_fix=0 rsp_err=174 scrub_cycles=2393 degraded=131530 data_lost_events=0
+[ecc=0 seed=3] COVERAGE fault kinds (slots): SA0=114 SA1=117 TF_UP=120 TF_DN=115 ROW0=80 ROW1=97 ALIAS=96 COUPLE=84
+[ecc=0 seed=3] COVERAGE outcomes: clean_boots=2 rows_in_spare=627 rows_ecc_assist=0 rows_unavailable=72
+[ecc=0 seed=3] ECC_EN=0 seed=3 boots=556 checks=476127 errors=0
+[ecc=0 seed=3] SVA_COVER boots=561 remap=748121 assist=0 unavail=107670 both_spares=215886 migrate=3 scrub_fault=3 ecc_fix=0 rsp_err=148 scrub_cycles=2393 degraded=111893 data_lost_events=0
+[ecc=0 seed=4] COVERAGE fault kinds (slots): SA0=123 SA1=123 TF_UP=122 TF_DN=111 ROW0=81 ROW1=86 ALIAS=89 COUPLE=102
+[ecc=0 seed=4] COVERAGE outcomes: clean_boots=2 rows_in_spare=628 rows_ecc_assist=0 rows_unavailable=85
+[ecc=0 seed=4] ECC_EN=0 seed=4 boots=556 checks=475565 errors=0
+[ecc=0 seed=4] SVA_COVER boots=561 remap=749926 assist=0 unavail=126586 both_spares=213666 migrate=3 scrub_fault=3 ecc_fix=0 rsp_err=174 scrub_cycles=2393 degraded=131548 data_lost_events=0
+[ecc=0 seed=5] COVERAGE fault kinds (slots): SA0=117 SA1=114 TF_UP=118 TF_DN=123 ROW0=82 ROW1=111 ALIAS=93 COUPLE=107
+[ecc=0 seed=5] COVERAGE outcomes: clean_boots=2 rows_in_spare=644 rows_ecc_assist=0 rows_unavailable=96
+[ecc=0 seed=5] ECC_EN=0 seed=5 boots=556 checks=475109 errors=0
+[ecc=0 seed=5] SVA_COVER boots=561 remap=753696 assist=0 unavail=142591 both_spares=232920 migrate=3 scrub_fault=3 ecc_fix=0 rsp_err=196 scrub_cycles=2393 degraded=148317 data_lost_events=0
+runs passed: 10
+REGRESSION_RESULT: PASS

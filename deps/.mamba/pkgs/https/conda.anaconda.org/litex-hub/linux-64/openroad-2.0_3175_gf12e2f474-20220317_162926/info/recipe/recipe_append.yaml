@@ -1,0 +1,16 @@
+extra:
+  build_type: github_actions
+  recipe_source:
+    repo: https://github.com/hdl/conda-eda
+    branch: refs/heads/master
+    commit: 9f11b26373576145146831bef9623fff30e12ece
+    describe: GIT_ERROR
+    date: '20220326_233025'
+  github_actions:
+    action_id: __hdl_conda-ci
+    run_id: '2045997244'
+    run_num: '957'
+    event: schedule
+  condarc:
+    channels:
+    - conda-forge

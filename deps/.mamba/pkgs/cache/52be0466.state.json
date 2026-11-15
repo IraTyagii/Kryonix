@@ -1,0 +1,16 @@
+{
+    "cache_control": "max-age=60, public",
+    "etag": "",
+    "has_shards": {
+        "last_checked": "2026-11-14T09:52:35Z",
+        "value": false
+    },
+    "has_zst": {
+        "last_checked": "2026-11-14T09:52:36Z",
+        "value": true
+    },
+    "mod": "Sat, 22 Jun 2024 01:11:01 GMT",
+    "mtime_ns": -4643014040466676535,
+    "size": 6690024,
+    "url": "https://conda.anaconda.org/litex-hub/linux-64/repodata.json"
+}

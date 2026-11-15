@@ -1,0 +1,45 @@
+
+9. Printing statistics.
+
+=== regenx_top ===
+
+   Number of wires:              10030
+   Number of wire bits:          11367
+   Number of public wires:         208
+   Number of public wire bits:    1535
+   Number of memories:               0
+   Number of memory bits:            0
+   Number of processes:              0
+   Number of cells:               9864
+     AND2_X1                       278
+     AND3_X1                        48
+     AND4_X1                        22
+     AOI211_X1                     598
+     AOI21_X1                      900
+     AOI221_X1                      88
+     AOI222_X1                      53
+     AOI22_X1                      379
+     BUF_X1                        322
+     DFF_X1                       1414
+     INV_X1                        759
+     MUX2_X1                      1005
+     NAND2_X1                      712
+     NAND3_X1                      227
+     NAND4_X1                       65
+     NOR2_X1                       902
+     NOR3_X1                       276
+     NOR4_X1                        47
+     OAI211_X1                     138
+     OAI21_X1                      753
+     OAI221_X1                      54
+     OAI222_X1                       2
+     OAI22_X1                      302
+     OAI33_X1                        6
+     OR2_X1                         96
+     OR3_X1                         31
+     OR4_X1                         16
+     XNOR2_X1                      268
+     XOR2_X1                       103
+
+   Chip area for module '\regenx_top': 16052.302000
+

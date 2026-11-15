@@ -1,0 +1,24 @@
+{
+    "arch": "x86_64",
+    "build": "bootstrap_ha15bf96_3",
+    "build_number": 3,
+    "build_string": "bootstrap_ha15bf96_3",
+    "channel": "conda-forge",
+    "constrains": [
+        "binutils_impl_linux-64 2.46.1"
+    ],
+    "depends": [
+        "__glibc >=2.17,<3.0.a0"
+    ],
+    "fn": "ld_impl_linux-64-2.46.1-bootstrap_ha15bf96_3.conda",
+    "license": "GPL-3.0-only",
+    "md5": "e82d33173910cc8da8da4e51d732ff3e",
+    "name": "ld_impl_linux-64",
+    "platform": "linux",
+    "sha256": "c3111ef2fcc5372d3c9fc36116f571107f7cd5de94a0f443a803fc037a5aeea7",
+    "size": 745094,
+    "subdir": "linux-64",
+    "timestamp": 1791565433,
+    "url": "https://conda.anaconda.org/conda-forge/linux-64/ld_impl_linux-64-2.46.1-bootstrap_ha15bf96_3.conda",
+    "version": "2.46.1"
+}

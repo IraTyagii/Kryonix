@@ -1,0 +1,14 @@
+rtl/regenx_pkg.sv
+rtl/regenx_ecc.sv
+rtl/regenx_mem_array.sv
+rtl/regenx_bist_controller.sv
+rtl/regenx_fault_manager.sv
+rtl/regenx_spare_allocator.sv
+rtl/regenx_addr_remap.sv
+rtl/regenx_mem_arbiter.sv
+rtl/regenx_recovery_check.sv
+rtl/regenx_repair_engine.sv
+rtl/regenx_mem_controller.sv
+rtl/regenx_scrubber.sv
+rtl/regenx_status_regs.sv
+rtl/regenx_top.sv

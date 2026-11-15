@@ -1,0 +1,33 @@
+==> 2026-11-14 15:22:45 <==
+# cmd: deps/.mm/bin/micromamba create -y -p deps/openroad-env -c litex-hub -c conda-forge openroad=2.0_3175_gf12e2f474
+# conda version: 3.8.0
++https://conda.anaconda.org/conda-forge/linux-64::libgomp-16.2.0-he0feb66_7
++https://conda.anaconda.org/conda-forge/linux-64::python_abi-3.7-4_cp37m
++https://conda.anaconda.org/conda-forge/linux-64::ld_impl_linux-64-2.46.1-bootstrap_ha15bf96_3
++https://conda.anaconda.org/conda-forge/linux-64::_openmp_mutex-4.5-20_gnu
++https://conda.anaconda.org/conda-forge/linux-64::libgcc-16.2.0-ha9f2e26_7
++https://conda.anaconda.org/conda-forge/linux-64::libnsl-2.0.1-hb9d3cd8_1
++https://conda.anaconda.org/conda-forge/linux-64::libffi-3.4.6-h2dba641_1
++https://conda.anaconda.org/conda-forge/linux-64::ncurses-6.6-hdb14827_1
++https://conda.anaconda.org/conda-forge/linux-64::bzip2-1.0.8-hda65f42_10
++https://conda.anaconda.org/conda-forge/linux-64::liblzma-5.8.3-hb03c661_1
++https://conda.anaconda.org/conda-forge/linux-64::libstdcxx-16.2.0-h934c35e_7
++https://conda.anaconda.org/conda-forge/linux-64::libgcc-ng-16.2.0-h69a702a_7
++https://conda.anaconda.org/conda-forge/linux-64::readline-8.3-hd6e31c0_1
++https://conda.anaconda.org/conda-forge/linux-64::xz-gpl-tools-5.8.3-ha02ee65_1
++https://conda.anaconda.org/conda-forge/linux-64::liblzma-devel-5.8.3-hb03c661_1
++https://conda.anaconda.org/conda-forge/linux-64::xz-tools-5.8.3-hb03c661_1
++https://conda.anaconda.org/conda-forge/linux-64::libstdcxx-ng-16.2.0-hdf11a46_7
++https://conda.anaconda.org/conda-forge/linux-64::libzlib-1.2.13-h4ab18f5_6
++https://conda.anaconda.org/conda-forge/linux-64::xz-5.8.3-ha02ee65_1
++https://conda.anaconda.org/conda-forge/linux-64::icu-68.2-h9c3ff4c_0
++https://conda.anaconda.org/conda-forge/linux-64::libsqlite-3.46.0-hde9e2c9_0
++https://conda.anaconda.org/conda-forge/linux-64::tk-8.6.13-noxft_h4845f30_101
++https://conda.anaconda.org/conda-forge/linux-64::zstd-1.5.6-ha6fb4c9_0
++https://conda.anaconda.org/conda-forge/linux-64::sqlite-3.46.0-h6d4b2fc_0
++https://conda.anaconda.org/conda-forge/linux-64::boost-cpp-1.76.0-h312852a_1
++https://conda.anaconda.org/conda-forge/noarch::ca-certificates-2026.10.23-hbd8a1cb_0
++https://conda.anaconda.org/conda-forge/linux-64::openssl-3.6.5-h781a0a9_0
++https://conda.anaconda.org/conda-forge/linux-64::python-3.7.12-hf930737_100_cpython
++https://conda.anaconda.org/litex-hub/linux-64::openroad-2.0_3175_gf12e2f474-20220317_162926
+# update specs: ["openroad=2.0.3175.gf12e2f474"]

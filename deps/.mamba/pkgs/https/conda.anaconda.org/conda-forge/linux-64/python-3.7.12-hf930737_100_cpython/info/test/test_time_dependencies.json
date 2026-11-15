@@ -1,0 +1,1 @@
+["setuptools", "cmake", "ripgrep", "openssl", "gcc_linux-64 9.*", "ninja", "gxx_linux-64 9.*", "cython"]

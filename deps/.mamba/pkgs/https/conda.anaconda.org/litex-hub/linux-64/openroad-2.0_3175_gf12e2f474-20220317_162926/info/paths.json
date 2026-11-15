@@ -1,0 +1,19 @@
+{
+  "paths": [
+    {
+      "_path": "bin/openroad",
+      "file_mode": "binary",
+      "path_type": "hardlink",
+      "prefix_placeholder": "/home/runner/work/conda-eda/conda-eda/workdir/conda-env/conda-bld/openroad_1648337851136/_h_env_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold_placehold",
+      "sha256": "2ed33cc9c7f3dad36ab5162fa326631c1a9c271fc15dadc393e05525c5eecaba",
+      "size_in_bytes": 78115224
+    },
+    {
+      "_path": "bin/sta",
+      "path_type": "hardlink",
+      "sha256": "017aa5eee7f700a4c473f286533271d2339eff295c5146335847cda6ee8fb6ff",
+      "size_in_bytes": 5403368
+    }
+  ],
+  "paths_version": 1
+}

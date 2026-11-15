@@ -1,0 +1,31 @@
+==> /usr/bin/git log -n1 <==
+commit f12e2f474102bfb875eeee57fb610d7d7de17770
+Merge: a4005d3d3 100198c0b
+Author: VidyaChhabria <40409719+VidyaChhabria@users.noreply.github.com>
+Date:   Sat Mar 26 12:12:14 2022 -0500
+
+    Merge pull request #1716 from The-OpenROAD-Project-staging/psm_warn_unplaced
+    
+    [psm] Add warning for unplaced instances
+==> /usr/bin/git describe --tags --dirty <==
+2.0-3175-gf12e2f474-dirty
+==> /usr/bin/git status <==
+On branch master
+Your branch is up to date with 'origin/master'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+  (commit or discard the untracked or modified content in submodules)
+	modified:   src/drt/CMakeLists.txt
+	modified:   src/gui/CMakeLists.txt
+	modified:   src/odb/CMakeLists.txt
+	modified:   src/sta (modified content)
+
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+	build_env_setup.sh
+	conda_build.sh
+	metadata_conda_debug.yaml
+
+no changes added to commit (use "git add" and/or "git commit -a")

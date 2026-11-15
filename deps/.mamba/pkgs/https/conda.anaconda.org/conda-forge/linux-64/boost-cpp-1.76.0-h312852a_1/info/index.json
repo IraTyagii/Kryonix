@@ -1,0 +1,22 @@
+{
+  "arch": "x86_64",
+  "build": "h312852a_1",
+  "build_number": 1,
+  "constrains": [
+    "libboost <0"
+  ],
+  "depends": [
+    "bzip2 >=1.0.8,<2.0a0",
+    "icu >=68.1,<69.0a0",
+    "libgcc-ng >=9.3.0",
+    "libstdcxx-ng >=9.3.0",
+    "xz >=5.2.5,<5.3.0a0",
+    "zstd >=1.5.0,<1.6.0a0"
+  ],
+  "license": "BSL-1.0",
+  "name": "boost-cpp",
+  "platform": "linux",
+  "subdir": "linux-64",
+  "timestamp": 1621195066226,
+  "version": "1.76.0"
+}

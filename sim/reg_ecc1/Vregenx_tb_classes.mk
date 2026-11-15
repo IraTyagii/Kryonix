@@ -1,0 +1,72 @@
+# Verilated -*- Makefile -*-
+# DESCRIPTION: Verilator output: Make include file with class lists
+#
+# This file lists generated Verilated files, for including in higher level makefiles.
+# See Vregenx_tb.mk for the caller.
+
+### Switches...
+# C11 constructs required?  0/1 (always on now)
+VM_C11 = 1
+# Timing enabled?  0/1
+VM_TIMING = 1
+# Coverage output mode?  0/1 (from --coverage)
+VM_COVERAGE = 0
+# Parallel builds?  0/1 (from --output-split)
+VM_PARALLEL_BUILDS = 1
+# Tracing output mode?  0/1 (from --trace/--trace-fst)
+VM_TRACE = 0
+# Tracing output mode in VCD format?  0/1 (from --trace)
+VM_TRACE_VCD = 0
+# Tracing output mode in FST format?  0/1 (from --trace-fst)
+VM_TRACE_FST = 0
+
+### Object file lists...
+# Generated module classes, fast-path, compile with highest optimization
+VM_CLASSES_FAST += \
+	Vregenx_tb \
+	Vregenx_tb___024root__DepSet_h2554068c__0 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__0 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__1 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__2 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__3 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__4 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__5 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__6 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__7 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__8 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__9 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__10 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__11 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__12 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__13 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__14 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__15 \
+	Vregenx_tb___024root__DepSet_h7f398f7a__16 \
+	Vregenx_tb__main \
+
+# Generated module classes, non-fast-path, compile with low/medium optimization
+VM_CLASSES_SLOW += \
+	Vregenx_tb___024root__Slow \
+	Vregenx_tb___024root__DepSet_h2554068c__0__Slow \
+	Vregenx_tb___024root__DepSet_h7f398f7a__0__Slow \
+	Vregenx_tb___024unit__Slow \
+	Vregenx_tb___024unit__DepSet_h7dac6e30__0__Slow \
+
+# Generated support classes, fast-path, compile with highest optimization
+VM_SUPPORT_FAST += \
+
+# Generated support classes, non-fast-path, compile with low/medium optimization
+VM_SUPPORT_SLOW += \
+	Vregenx_tb__Syms \
+
+# Global classes, need linked once per executable, fast-path, compile with highest optimization
+VM_GLOBAL_FAST += \
+	verilated \
+	verilated_timing \
+	verilated_threads \
+
+# Global classes, need linked once per executable, non-fast-path, compile with low/medium optimization
+VM_GLOBAL_SLOW += \
+
+
+# Verilated -*- Makefile -*-
