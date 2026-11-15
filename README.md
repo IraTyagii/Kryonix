@@ -129,7 +129,7 @@ The following results are recorded in the included `reports/` files and scripts.
 
 Run the commands from the repository root in a supported Linux environment (the setup script targets Ubuntu packages). On Windows, use WSL2 with Ubuntu.
 
-```sh
+
 ./scripts/setup_deps.sh       # install required tools / prepare OpenROAD environment
 make lint                     # Verilator lint, with and without simulation fault model
 make regress                  # five seeds × ECC on/off regression
@@ -141,7 +141,7 @@ make uvm                      # Slang UVM compile/elaboration check only
 make demo                     # Icarus demo simulation and VCD processing
 make uvm-latency               # demo VCD monitor-latency check
 make mutate                   # run the mutation script; inspect its result
-make vivado-synth              # requires Vivado; unverified in this package
+make vivado-synth              # requires Vivado; unverified in this package 
 
-# GDS 
+#GDS 
 <img width="1846" height="1172" alt="Screenshot from 2026-11-15 09-19-34" src="https://github.com/user-attachments/assets/0f17d560-5fed-45c9-99a2-bf78a308a793" />
