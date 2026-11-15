@@ -1,104 +1,199 @@
-# REGEN-X: self-healing 16 x 8 memory
-
-A memory that tests itself at power-up, repairs itself with spare rows, proves the repair, and keeps
-healing while it is in service. Written in SystemVerilog, verified with a Verilator/Icarus regression,
-SVA, gate-level equivalence and a UVM environment, and taken through synthesis and place-and-route
-on an open PDK.
-
-## What it does
-
-1. **Boot.** After reset a March C- BIST sweeps all 18 physical rows (16 + 2 spares, spares first),
-   twice: once with solid data and once with a checkerboard (finds coupling inside a word).
-2. **Repair.** Rows ECC cannot cover get spares first; single-bit rows get a spare only if one is
-   left, otherwise they stay in place in *ECC-assist* mode; rows with nothing left are marked
-   unavailable and answer with `rsp_error`.
-3. **Prove it.** Every remapped or assisted row is exercised through the real host path
-   (remap + ECC) with four patterns. A spare that fails is thrown out and the row is decided again.
-4. **Serve.** Host gets `req_ready` only after `init_done`. One request in flight, fixed 4-cycle latency.
-5. **Keep healing.** A scrubber re-tests rows while the host is idle (patrol round, timer, or a hint
-   raised when a read needed ECC correction), and moves a row that died in service to a healthy
-   spare *with its data*.
-
-## What is new compared with the proposal baseline
-
-| Feature | Why it matters |
-|---|---|
-| SECDED (13,8) ECC on every physical word (`ECC_EN`, default 1) | masks a single bad bit, flags double errors |
-| Severity-aware spare allocation | multi-bit rows (ECC cannot help) win the scarce spares |
-| ECC-assist mode | a single-bit row keeps working when spares run out, so capacity is not lost |
-| Two-background March (solid + checkerboard) | classic March C- misses intra-word coupling |
-| March-signature diagnosis | each bad row is classified: stuck-high, cannot-rise, cannot-fall, pattern, multi-bit |
-| Recovery verification with retry | a repair is checked end to end, a bad spare is replaced |
-| Online scrubber with live migration, error-triggered healing | repair is not limited to boot time |
-| Status register bank | fault count, class of last fault, spare owners, ECC and scrub counters, sticky data-loss flag and lost-row map |
-| Uncorrectable-error policy | lost data is never migrated; the row is retired and reported |
-
-`ECC_EN=0` gives the plain 8-bit baseline from the proposal (same modules, no ECC, no assist).
-
-## Module map
-
-| Proposal block | File |
-|---|---|
-| Memory array (+ simulation fault model) | `rtl/regenx_mem_array.sv` |
-| BIST controller | `rtl/regenx_bist_controller.sv` |
-| Fault manager | `rtl/regenx_fault_manager.sv` |
-| Spare allocator | `rtl/regenx_spare_allocator.sv` |
-| Address remap unit | `rtl/regenx_addr_remap.sv` |
-| Memory arbiter | `rtl/regenx_mem_arbiter.sv` |
-| Recovery verification | `rtl/regenx_recovery_check.sv` |
-| Status registers | `rtl/regenx_status_regs.sv` |
-| Memory controller (host side) | `rtl/regenx_mem_controller.sv` |
-| Added: repair engine, scrubber, ECC, package, top | `regenx_repair_engine`, `regenx_scrubber`, `regenx_ecc`, `regenx_pkg`, `regenx_top` |
-
-Status registers (4-bit address): reg 0 bit 6 = `data_lost` (sticky), reg 8 = lost-row map + loss counter. `status_clear` clears the flag, map and counters (rows stay unavailable).
-
-Fault kinds the simulation model can inject (`-DREGENX_SIM`, never synthesized): stuck-at-0/1,
-transition up/down, dead word line (row all 0 / all 1), write alias into the next row, intra-word coupling.
-
-## Verification status (final RTL)
-
-Executed and passing on the final RTL (logs in `reports/`):
-
-| Check | Result |
-|---|---|
-| Lint (`scripts/lint.sh`, with and without the sim fault model) | clean, `-Wall` |
-| Functional regression (`scripts/run_regression.sh`: 5 seeds x ECC on/off, NRAND=300, timer patrol 3000) | **10/10 runs pass**; ECC on: 3,110 boots, 2.69M checks; ECC off: 2,780 boots, 2.38M checks; 0 errors; 26 SVA properties live, none fired |
-| Uncorrectable ECC (`t_lost`) | row retired, sticky `data_lost`, nothing migrated, neighbours intact, `status_clear` and reset behave |
-| Gate-level equivalence (`scripts/run_gls.sh`) | RTL vs synthesized netlist, 40 scenarios, 118,560 cycles, 0 mismatches |
-| Synthesis (Yosys + Nangate45, `check -assert`) | ECC on: 8,721 cells, 1,414 flops, 14,899 um^2; ECC off baseline: 6,432 cells, 1,085 flops, 11,030 um^2 (+35 %) |
-| OpenROAD floorplan to route (`scripts/run_pd.sh`) | reaches `PD_FLOW_DONE`; 0 DRC violations; 17,148 um^2, 64 % utilization |
-| Post-route timing (OpenRCX SPEF, 250 MHz target) | setup slack +0.08 ns, hold slack +0.01 ns, TNS 0. Earlier placement-only estimates (+1.05 ns) were optimistic and are not used |
-| UVM environment | elaborates with 0 errors against the Accellera UVM source (compile only, see below) |
-| UVM monitor latency | replayed on a fresh waveform: `age` gives 4 (matches scoreboard), the old `age + 1` gave 5 |
-| Waveform protocol re-check from the VCD | 1,749 cycles, 11 transactions at 4-cycle latency, 0 violations |
-| Functional coverage | per-seed fault-kind / outcome tallies and SVA cover counters in `reports/regression.txt` |
-
-**Not done / not verified in this package**
-- **Mutation testing:** `scripts/mutate.py` was rewritten (12 mutants including the data-loss path) and passes a syntax check. A full run was started but had not finished when this zip was made, so there is **no mutation report here**; do not quote the earlier 9/9 figure, it was for the previous RTL. Run `make mutate` to regenerate `reports/mutation.txt`.
-- **UVM was never executed** (no UVM-capable simulator available), only compiled and elaborated.
-- **Vivado was never run.** `vivado/` has the project-generation Tcl, XSim and UVM scripts and a timing-only XDC, all untested. The `.xpr` is created by `vivado/create_project.tcl`. The default part is a placeholder; pick your board before adding pin constraints.
-- The physical-design flow was run in the development tree, not yet from a fresh unzip. OpenROAD (2022-03 build) is installed by `scripts/setup_deps.sh`, not vendored.
-
-## Honest limits
-
-- **UVM was compiled, not run.** There is no UVM-capable simulator in this flow. The self-checking regression, SVA and gate-level runs are the executed evidence; the UVM environment is a compile/elaboration-checked deliverable that needs a commercial simulator (or Verilator UVM support) to run.
-- The physical design uses the open Nangate45 library, not a foundry PDK. Timing and power come from OpenROAD's parasitic estimates, not sign-off extraction. No GDS was produced.
-- The array is flop-based. Faults are simulation models; real silicon defects will differ.
-- Data survival of a cell that dies in service is only guaranteed with `ECC_EN=1` (single-bit). Without ECC the row is still detected and moved, but a stuck bit's old data cannot be recovered.
-- Cells that power up in an unknown state make "cannot-fall" and "stuck-high" ambiguous in real silicon; the classification is what the march observes.
-
-## Running it
-
+REGEN-X: Self-healing 16 × 8 memory
+REGEN-X is a SystemVerilog design for a 16-word logical memory with 8-bit host data and two spare physical words. At reset, built-in self-test (BIST) examines the physical array, the repair logic builds a logical-to-physical map, and recovery verification checks repaired or ECC-assisted rows. After initialization, a host interface accesses the memory while an online scrubber can periodically or reactively inspect rows and migrate data when a correctable fault is found.
+The implementation in this repository is a flop-based memory model, not a compiled SRAM macro. Fault injection is a simulation-only feature enabled with `-DREGENX_SIM`.
+Design configuration
+Item	Implementation
+Logical capacity	16 words × 8 data bits
+Physical capacity	18 words: 16 logical locations plus 2 spare locations
+Address widths	4-bit logical address; 5-bit physical address
+Stored word width	13 bits when ECC is enabled; 8 bits when disabled
+ECC	Optional SECDED (13,8), enabled by default with `ECC_EN=1`
+Automatic patrol	Controlled by `PATROL_PERIOD`; `0` disables timer-triggered patrol
+Host interface	Valid/ready request and valid response; one request in flight
+The package constants are defined in `rtl/regenx_pkg.sv`. The top-level parameters are declared in `rtl/regenx_top.sv`.
+Operation
+Boot BIST. After reset, `regenx_bist_controller` tests all 18 physical words through the raw memory port, bypassing address remapping and ECC. The test uses three backgrounds/passes: an all-zero background, a checkerboard background, and a final clear pass that leaves the words at zero. The physical traversal visits the two spare words first, followed by the 16 normal physical words. The checkerboard pass is intended to expose intra-word coupling that an all-zero background alone may not reveal.
+Fault logging and diagnosis. `regenx_fault_manager` records the failing physical row and bit mask, retaining signatures from the solid/all-zero and checkerboard tests. It classifies observed failures using the March signature. The available classes are `FC_STUCK_HI`, `FC_NO_RISE`, `FC_NO_FALL`, `FC_PATTERN`, `FC_MULTI`, and `FC_ONLINE`; the classification describes what the test observed and is not a physical failure-analysis guarantee.
+Repair and allocation. `regenx_repair_engine` processes severe rows before mild rows. A row is considered severe when ECC is disabled or the recorded failing-bit mask contains more than one bit. Severe rows are assigned a spare when one is available; otherwise they are marked unavailable. A single-bit row can be assigned a spare if one remains, or retained at its original physical location in ECC-assist mode. The spare allocator tracks the two spare rows and their logical owners.
+Recovery verification. `regenx_recovery_check` exercises a candidate remapped or assisted row through the same remap and ECC path used for host accesses. It writes and reads four data patterns and reports pass/fail. If a replacement spare fails verification, the repair engine releases that spare and retries the decision for the affected row. An assisted row that fails verification is marked unavailable.
+Host service. The host controller accepts a request only when `init_done` is asserted, the controller is idle, and the scrubber is not busy. It translates the logical address through the remap table, accesses the physical array, and returns a response. An unavailable logical row produces `rsp_error`. The controller permits one request in flight.
+Online scrubbing. `regenx_scrubber` can start a patrol round on an explicit scrub request or on its configured timer. It can also receive a row hint from the host controller after a read requires ECC correction or reports an uncorrectable ECC result. For a correctable row, it saves the decoded data before running a destructive raw-word test. If the row fails, it attempts to move the saved data to a healthy spare; if no spare is available, a single-bit fault can remain in ECC-assist mode, while a fault ECC cannot cover is marked unavailable. If the initial ECC read is uncorrectable, the data is treated as lost: the row is retired and is not migrated.
+ECC behavior
+`rtl/regenx_ecc.sv` implements the optional SECDED (13,8) encoder and decoder. With `ECC_EN=1`, each 8-bit data word is stored as a 13-bit codeword: eight data bits, four Hamming check bits, and one overall parity bit. A single-bit error is corrected on read and indicated by `rsp_corrected`; a detected uncorrectable error is reported with `rsp_error`. A corrected or uncorrectable host read can raise a scrub hint for the corresponding logical row.
+With `ECC_EN=0`, the physical word width is 8 bits and the ECC encoder/decoder act as pass-through logic. ECC correction and ECC-assist behavior are disabled. The regression runs both configurations; the no-ECC configuration is a comparison build, not a guarantee of preserving data from a faulty bit during migration.
+Main RTL modules
+Module	Source file	Responsibility
+Shared constants, enums and types	`rtl/regenx_pkg.sv`	Defines row counts, widths, fault kinds/classes and remap kinds
+Top-level integration	`rtl/regenx_top.sv`	Connects BIST, fault handling, repair, remap, host, scrubber, status and memory
+Physical memory array	`rtl/regenx_mem_array.sv`	18-word flop array with optional simulation-only fault injection
+Memory arbiter	`rtl/regenx_mem_arbiter.sv`	Selects which client drives the shared physical memory port
+BIST controller	`rtl/regenx_bist_controller.sv`	Runs the three-pass physical-memory test
+Fault manager	`rtl/regenx_fault_manager.sv`	Stores failing masks/signatures and derives fault classes/severity
+Spare allocator	`rtl/regenx_spare_allocator.sv`	Tracks spare availability and logical-row ownership
+Address remapper	`rtl/regenx_addr_remap.sv`	Maps logical rows to physical rows or marks assist/unavailable states
+Repair engine	`rtl/regenx_repair_engine.sv`	Allocates spares, applies remap decisions and coordinates recovery checks
+Recovery checker	`rtl/regenx_recovery_check.sv`	Verifies repaired/assisted rows through the remap and ECC data path
+ECC encoder/decoder	`rtl/regenx_ecc.sv`	Implements optional SECDED (13,8)
+Host memory controller	`rtl/regenx_mem_controller.sv`	Implements host request/response, address translation, ECC reporting and scrub hints
+Online scrubber	`rtl/regenx_scrubber.sv`	Patrols/hint-checks rows and migrates recoverable data
+Status registers	`rtl/regenx_status_regs.sv`	Exposes state, fault, ECC, scrub, migration and data-loss diagnostics
+The physical array is shared. BIST uses it during boot; repair verification uses it after BIST; host and scrubber use it during normal operation. `regenx_mem_arbiter` selects the active client. The top-level control sequencing prevents the boot test and later repair/scrub activity from being treated as simultaneous independent memory ports.
+Status register map
+The status interface uses a 4-bit `reg_addr` and returns a 32-bit `reg_rdata`. The implemented register addresses are:
+Address	Contents
+`0`	Status flags: `init_done`, `bist_busy`, `degraded`, unavailable-row-present, `scrub_busy`, `ecc_en`, and sticky `data_lost` (bit 6)
+`1`	Fault count
+`2`	Last-fault valid, class and physical row
+`3`	Spare usage, spare-bad state and owner fields
+`4`	Verification-failure count and counts of unavailable, assisted and remapped rows
+`5`	16-bit unavailable logical-row map
+`6`	ECC corrected-read and uncorrectable-read counters
+`7`	Scrub/repair event counters
+`8`	Bits `[15:0]`: lost logical-row map; bits `[23:16]`: loss-event count
+`status_clear` clears the sticky data-loss flag, lost-row map and event counters. It does not restore rows marked unavailable or undo the remap/repair state. Reset also clears the status state.
+Simulation fault injection
+The simulation-only fault model is compiled with `-DREGENX_SIM`; it is not part of the synthesized hardware interface. The supported fault kinds in `regenx_pkg.sv` / `regenx_mem_array.sv` are:
+`FK_SA0`, `FK_SA1`: stuck-at-zero or stuck-at-one bit read behavior.
+`FK_TF_UP`, `FK_TF_DN`: failed 0→1 or 1→0 transition behavior.
+`FK_ROW0`, `FK_ROW1`: whole-word/word-line read as all zero or all one.
+`FK_ALIAS`: a write to the selected row also writes the next physical row.
+`FK_COUPLE`: a selected bit is written from its neighboring bit, modeling intra-word coupling.
+These are RTL simulation abstractions. They do not establish that the design has been tested against the full range of physical SRAM defect mechanisms.
+Verification and implementation evidence in this package
+The following results are recorded in the included `reports/` files and scripts. They describe the supplied run artifacts, not a fresh rerun on every machine.
+Check	Evidence in this package
+Lint	`scripts/lint.sh` runs Verilator lint with and without `REGENX_SIM`; lint logs are included in `reports/`
+Functional regression	`scripts/run_regression.sh` runs five seeds with ECC enabled and five with ECC disabled, with `NRAND=300` and `PERIOD=3000`; `reports/regression.txt` records 10 passed runs, zero testbench errors
+Regression volume	ECC on: 622 boots per seed (3,110 total), about 2.69 million checks total; ECC off: 556 boots per seed (2,780 total), about 2.38 million checks total
+SVA	The regression testbench includes the SVA checker; the regression report records SVA coverage counters and no test failures
+Uncorrectable data-loss path	The regression testbench includes the `t_lost` scenario; see `tb/regenx_tb.sv` and the regression logs for the exercised behavior
+Gate-level equivalence	`scripts/run_gls.sh` compares RTL and synthesized netlist in 40 scenarios; the included GLS report records 118,560 cycles and zero mismatches
+Synthesis	Yosys with the Nangate45 standard-cell library: ECC build 8,721 cells, 1,414 DFFs, 14,899.192 µm²; no-ECC build 6,432 cells, 1,085 DFFs, 11,029.956 µm²
+Place and route	`scripts/run_pd.sh` reaches `PD_FLOW_DONE`; the included OpenROAD report records 17,148 µm² design area at 64% utilization
+Post-route timing	Extracted parasitics are written to SPEF; reported worst setup slack is +0.08 ns and worst hold slack is +0.01 ns, with TNS/WNS reported as 0
+UVM source check	`make uvm` runs a Slang compile/elaboration check against the Accellera UVM source; this is not a UVM simulation run
+UVM monitor latency check	`make uvm-latency` checks the demo VCD against the UVM monitor's latency calculation
+Demo waveform	`make demo` runs the Icarus demo testbench, writes a VCD and processes it with `scripts/vcd_tools.py`
+Not established by the included evidence
+UVM simulation was not run. The UVM environment is compile/elaboration checked with Slang; no UVM-capable simulator run is included.
+Mutation testing is not reported as passing. `scripts/mutate.py` is present and `make mutate` invokes it, but this archive does not contain a completed mutation-test report. Run it and inspect its output before making any mutation-coverage claim.
+Vivado was not run. The `vivado/` scripts are provided but are unverified in this package. The project-generation Tcl uses a placeholder part; select the actual FPGA part and add board pin constraints before using it for a board build.
+No GDS is included or claimed. The recorded physical-design flow uses the open Nangate45 library, not a foundry PDK. The timing values are OpenROAD post-route estimates using extracted parasitics, not foundry sign-off timing.
+No silicon measurement exists. Area, timing and power figures are implementation-tool results, not measured silicon characteristics.
+Limitations and interpretation
+The storage array is implemented with standard-cell flops; it is not an SRAM macro. A real SRAM implementation would require macro integration and a compatible test/repair interface.
+Faults are injected by a simulation-only behavioral model. Silicon defect behavior, retention, disturb, process variation and radiation effects are not qualified by these tests.
+ECC can correct a single-bit error in a codeword and detect the supported uncorrectable cases; it cannot reconstruct arbitrary lost data. When the scrubber reads an uncorrectable word, it retires the row and does not migrate the corrupted data.
+In the no-ECC configuration, a faulty row can be detected and remapped, but the original data may already be corrupted and cannot be recovered by ECC.
+March diagnosis reports the observed signature. Unknown power-up cell values can make some physical defect categories ambiguous; the RTL classification should not be interpreted as definitive silicon diagnosis.
+This is a prototype RTL and open-source implementation flow, not a production-qualified memory subsystem or a functional-safety certification.
+Build and run
+Run the commands from the repository root in a supported Linux environment (the setup script targets Ubuntu packages). On Windows, use WSL2 with Ubuntu.
+```sh
+./scripts/setup_deps.sh       # install required tools / prepare OpenROAD environment
+make lint                     # Verilator lint, with and without simulation fault model
+make regress                  # five seeds × ECC on/off regression
+make synth                    # Yosys synthesis, ECC enabled
+make synth-noecc              # Yosys synthesis, ECC disabled
+make gls                      # RTL vs synthesized gate-level equivalence
+make pd                       # synthesis followed by OpenROAD place-and-route
+make uvm                      # Slang UVM compile/elaboration check only
+make demo                     # Icarus demo simulation and VCD processing
+make uvm-latency               # demo VCD monitor-latency check
+make mutate                   # run the mutation script; inspect its result
+make vivado-synth              # requires Vivado; unverified in this package
 ```
-./scripts/setup_deps.sh   # once: apt packages, pip packages, OpenROAD into deps/openroad-env
-make lint regress         # 10-run regression (SEEDS / NRAND / PERIOD env vars override)
-make synth synth-noecc gls pd
-make uvm uvm-latency demo mutate
-make vivado-synth         # needs Vivado, untested here
-```
-All scripts use strict shell mode and fail on a nonzero tool exit or a missing PASS marker
-(`TB_RESULT`, `REGRESSION_RESULT`, `GLS_RESULT`, `SYNTH_RESULT`, `PD_FLOW_DONE`, `LINT_RESULT`).
-Dependencies and versions: `deps/README.md`.
+The regression script accepts environment overrides including `SEEDS`, `NRAND` and `PERIOD`. See `scripts/run_regression.sh`, `scripts/env.sh`, `deps/README.md` and the individual scripts for exact tool invocation and dependency details. `make all` runs the Makefile's aggregate targets, including mutation testing; it should not be treated as a substitute for checking each target's result and logs.
+
+Additional implementation report tables supplied with this project
+The following tables transcribe the six report-summary screenshots supplied with this README update. They describe a SKY130A / SKY130 HD implementation snapshot with a 10 ns target clock (100 MHz), OpenLane/Yosys and OpenROAD stages, and Magic/KLayout physical verification. The screenshots are retained in `reports/sky130a_summary_images/` for traceability.
+> **Important provenance distinction:** the screenshot tables below are a separate SKY130A implementation summary. The machine-readable reports already present in this repository (`reports/pd_summary.rpt`, `reports/synth_stat.txt`, and `reports/regression.txt`) document a different run/configuration: the checked-in OpenROAD place-and-route report explicitly reads the **Nangate45** library and reports 17,148 µm² at 64% utilization, with post-route setup/hold slack of +0.08 ns/+0.01 ns. Do not combine the SKY130A screenshot figures with the Nangate45 report figures as if they came from one run. The SKY130A values below are transcribed from the supplied screenshots; they are not regenerated by the scripts in this archive.
+A. Design configuration (SKY130A summary)
+Parameter	Specification
+Project	REGEN-X
+Architecture	Adaptive Self-Healing Memory
+Logical memory rows	16
+Spare physical rows	2
+Total physical rows	18
+Data width	8 bits
+ECC scheme	SECDED
+ECC codeword width	13 bits
+Logical address width	4 bits
+Physical address width	5 bits
+BIST algorithm	March C-
+Fault injection	Simulation-only
+Technology	SKY130A
+Standard-cell library	SKY130 HD
+B. Implementation flow status (SKY130A summary)
+Stage	Tool / process	Reported status
+RTL development	SystemVerilog	Completed
+RTL conversion	sv2v	PASS
+Linting	Verilator	0 errors
+Synthesis	OpenLane / Yosys	Completed
+Floorplanning	OpenROAD	Completed
+Power planning	PDN generation	Completed
+Placement	OpenROAD	Completed
+Clock-tree synthesis	OpenROAD	Completed
+Global routing	OpenROAD	Completed
+Detailed routing	OpenROAD	Completed
+Parasitic extraction	SPEF extraction	Completed
+Static timing analysis	OpenSTA	Completed
+GDS generation	Magic / KLayout	Completed (as stated in screenshot; GDS file is not included in this archive)
+LVS	Netgen	PASS
+DRC	Magic	PASS
+C. Physical implementation metrics (SKY130A summary)
+Parameter	Measured / reported value
+Technology	SKY130A
+Standard-cell library	SKY130 HD
+Target clock period	10 ns
+Target frequency	100 MHz
+Die area	0.26819 mm²
+Core area	250,940.67 µm²
+Placement utilization	35.91%
+Synthesized cell count	8,356
+Total physical cells	31,024
+Total routed wire length	446,088 µm
+Number of vias	75,690
+GDS file size	Approximately 25.6 MB (reported in screenshot; file not included here)
+D. Timing summary (SKY130A summary)
+Timing parameter	Result
+Target clock period	10 ns
+Target frequency	100 MHz
+Critical path estimate	5.13 ns
+Final extracted setup slack	+0.62 ns
+Final extracted hold slack	+0.27 ns
+Final extracted TNS	0.00 ns
+Final extracted WNS	0.00 ns
+Setup violations	0
+Hold violations	0
+The screenshot reports positive setup and hold slack at the stated 10 ns target. These are reported implementation results, not a guarantee of timing at another clock target, library, process corner or physical-design setup.
+E. Power summary (SKY130A summary)
+Power component	Reported power
+Sequential internal power	6.37 mW
+Sequential switching power	0.625 mW
+Combinational internal power	6.80 mW
+Combinational switching power	6.09 mW
+Total internal power	13.2 mW
+Total switching power	6.72 mW
+Leakage power	0.0000632 mW
+Total estimated power	19.9 mW
+Power values are tool estimates as shown in the supplied summary; they are not measured silicon power. The operating activity, corner and estimation assumptions should accompany these figures in any formal comparison.
+F. Verification and physical-check summary (SKY130A summary)
+Verification item	Reported result	Screenshot status
+Functional regression	10/10 passed	PASS
+LVS	0 errors	PASS
+Detailed-routing DRC	0 violations	PASS
+Magic DRC	0 violations	PASS
+Magic / KLayout XOR	No differences	PASS
+Setup timing	+0.62 ns slack	PASS
+Hold timing	+0.27 ns slack	PASS
+Global-routing antenna repair	0 remaining router violations	PASS
+Final ARC net violations	27	Pending
+Final ARC pin violations	35	Pending
+G. How to cite these results accurately
+Attribute Tables A–F to the supplied SKY130A summary screenshots, not to the Nangate45 report files in this archive.
+When describing the checked-in `make pd` flow, quote the Nangate45 figures from `reports/pd_summary.rpt` instead: 17,148 µm² design area, 64% utilization, +0.08 ns setup slack and +0.01 ns hold slack.
+The screenshot says GDS generation completed and reports an approximately 25.6 MB GDS, but that GDS artifact is not present in this project ZIP. Do not imply the archive contains the GDS.
 
 # GDS 
 <img width="1846" height="1172" alt="Screenshot from 2026-11-15 09-19-34" src="https://github.com/user-attachments/assets/0f17d560-5fed-45c9-99a2-bf78a308a793" />
