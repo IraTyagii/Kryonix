@@ -124,24 +124,23 @@ The following results are recorded in the included `reports/` files and scripts.
 - In the no-ECC configuration, a faulty row can be detected and remapped, but the original data may already be corrupted and cannot be recovered by ECC.
 - March diagnosis reports the observed signature. Unknown power-up cell values can make some physical defect categories ambiguous; the RTL classification should not be interpreted as definitive silicon diagnosis.
 - This is a prototype RTL and open-source implementation flow, not a production-qualified memory subsystem or a functional-safety certification.
+  
+## Build and Run Commands
 
-## Build and run
-
-Run the commands from the repository root in a supported Linux environment (the setup script targets Ubuntu packages). On Windows, use WSL2 with Ubuntu.
-
-
-./scripts/setup_deps.sh       # install required tools / prepare OpenROAD environment
-make lint                     # Verilator lint, with and without simulation fault model
-make regress                  # five seeds × ECC on/off regression
-make synth                    # Yosys synthesis, ECC enabled
-make synth-noecc              # Yosys synthesis, ECC disabled
-make gls                      # RTL vs synthesized gate-level equivalence
-make pd                       # synthesis followed by OpenROAD place-and-route
-make uvm                      # Slang UVM compile/elaboration check only
-make demo                     # Icarus demo simulation and VCD processing
-make uvm-latency               # demo VCD monitor-latency check
-make mutate                   # run the mutation script; inspect its result
-make vivado-synth              # requires Vivado; unverified in this package 
+| Command | Description |
+|---|---|
+| `./scripts/setup_deps.sh` | Install required tools and prepare the OpenROAD environment |
+| `make lint` | Run Verilator lint with and without the simulation fault model |
+| `make regress` | Run five seeds with ECC enabled and disabled |
+| `make synth` | Run Yosys synthesis with ECC enabled |
+| `make synth-noecc` | Run Yosys synthesis with ECC disabled |
+| `make gls` | Verify RTL against the synthesized gate-level netlist |
+| `make pd` | Run synthesis followed by OpenROAD place-and-route |
+| `make uvm` | Run Slang UVM compile and elaboration check only |
+| `make demo` | Run Icarus demo simulation and VCD processing |
+| `make uvm-latency` | Check demo VCD monitor latency |
+| `make mutate` | Run the mutation script and inspect its results |
+| `make vivado-synth` | Run Vivado synthesis (requires Vivado; unverified in this package) |
 
 #GDS 
 <img width="1846" height="1172" alt="Screenshot from 2026-11-15 09-19-34" src="https://github.com/user-attachments/assets/0f17d560-5fed-45c9-99a2-bf78a308a793" />
