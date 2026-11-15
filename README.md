@@ -99,3 +99,5 @@ make vivado-synth         # needs Vivado, untested here
 All scripts use strict shell mode and fail on a nonzero tool exit or a missing PASS marker
 (`TB_RESULT`, `REGRESSION_RESULT`, `GLS_RESULT`, `SYNTH_RESULT`, `PD_FLOW_DONE`, `LINT_RESULT`).
 Dependencies and versions: `deps/README.md`.
+#GDS 
+<img width="1846" height="1172" alt="Screenshot from 2026-11-15 09-19-34" src="https://github.com/user-attachments/assets/0f17d560-5fed-45c9-99a2-bf78a308a793" />
